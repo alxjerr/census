@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>户籍管理</title>
+		<link rev="stylesheet" rel="stylesheet" href="easyui/themes/default/easyui.css" />
+		<link rev="stylesheet" rel="stylesheet" href="easyui/themes/icon.css" />
+		<script src="easyui/jquery.min.js"></script>
+		<script src="easyui/locale/easyui-lang-zh_CN.js"></script>
+		<script src="easyui/jquery.easyui.min.js"></script>
+		
+		<script type="text/javascript">
+		var closeIndex = -999;
+			$(function(){
+				$('#mt').datagrid({
+					idField:'id',
+					columns:[[
+						{title:'姓名',field:'name',editor:'text'},//editor是可编辑，对所填写内容的验证类型
+						{title:'年龄',field:'age',editor:'numberbox'},
+						{title:'个人信息',field:'info'},//则不可编辑
+						{title:'住址',field:'address'}
+					]],
+					frozenColumns:[[//同列属性，但是这些列将会被冻结在左侧。
+		   			{title:'选择',field:'id',checkbox:true}//行前复选框
+		   	]],
+					
+					data:[
+						{'id':100,'name':'scott','age':23,'sex':'男','info':'房产默认户主','address':'A区海德花园六栋三单元201'},
+						{'id':101,'name':'tom1','age':23,'sex':'男','info':'房产默认户主..............................................asc','address':'A区海德花园六栋三单元201'},
+						{'id':102,'name':'tom2','age':23,'sex':'男','info':'房产默认户主','address':'A区海德花园六栋三单元201'},
+						{'id':103,'name':'scott3','age':23,'sex':'男','info':'房产默认户主','address':'A区海德花园六栋三单元201'},
+						{'id':104,'name':'tom4','age':23,'sex':'男','info':'房产默认户主..............................................asc','address':'A区海德花园六栋三单元201'},
+						{'id':105,'name':'tom5','age':23,'sex':'男','info':'房产默认户主','address':'A区海德花园六栋三单元201'},
+						{'id':106,'name':'scott6','age':23,'sex':'男','info':'房产默认户主','address':'A区海德花园六栋三单元201'},
+						{'id':107,'name':'tom7','age':23,'sex':'男','info':'房产默认户主..............................................asc','address':'A区海德花园六栋三单元201'},
+						{'id':108,'name':'tom8','age':23,'sex':'男','info':'房产默认户主','address':'A区海德花园六栋三单元201'}
+					],
+					toolbar: [{
+						iconCls: 'icon-edit',
+						text:'编辑',
+						handler: function(){
+							/*var myselect=-999;*/
+						if(closeIndex==-999){
+						//返回选定的行
+						var row = $('#mt').datagrid('getSelected');
+						//获取行号
+						var index = $('#mt').datagrid('getRowIndex',row);
+						$('#mt').datagrid('beginEdit',index);
+						closeIndex=index;
+					}else{	
+						aa();
+						$('#mt').datagrid('endEdit',closeIndex);	
+						//返回选定的行
+						var row = $('#mt').datagrid('getSelected');
+						//获取行号
+						var index = $('#mt').datagrid('getRowIndex',row);
+						$('#mt').datagrid('beginEdit',index);			
+						closeIndex=index;
+							
+					}
+						}
+					},'-',{
+						iconCls: 'icon-remove',
+						text:'删除',
+						handler: function(){
+							var row = $('#mt').datagrid('getSelected');
+							alert(row.name);
+						}
+					},'-',{
+						iconCls: 'icon-add',
+						text:'添加',
+						handler: function adduser(){
+							//是不是应该写函数，点击click?不，handler点击之后就是来处理的。
+							//windows窗口
+							//$('#win').window('refresh','form1.html');
+							/*$.messager.alert('应该是form表单','弹出form'),*/
+							$('#form1').dialog({
+								title: '新增用户',   
+							    width: 410,   
+							    height: 360,   
+							    minimizable:true,
+							    maximizable:false,
+							    resizable:true,
+							    closed:false,
+							    closable:true,
+							    modal: true,
+							    content:'<iframe src="form1.html" style="border:0;width:100%;height:100%" > 这是iframe</iframe>',
+								
+							})
+						}
+					}],
+					
+					
+					
+										
+					striped:true,
+					nowrap:true,
+					//loadMsg:'请等待数据加载中.....',
+					singleSelect:true,
+					sortName:'age',
+					pagination:true,
+					pagePosition:'bottom',
+					pageNumber:1,
+					pageSize:10,
+					pageList:[10,20,30]
+				});
+		
+			})
+			function aa(){
+			$.messager.confirm("警示消息","是否确认保存？",function(r){
+								if(r){ 
+									var row = $('#mt').datagrid('getSelected');
+									var index = $('#mt').datagrid('getRowIndex',row);
+									/*$('#mt').datagrid('deleteRow',index);*/
+									//
+ 									$.messager.alert("提示消息","成功保存！","info",function(){
+ 										//与后台交互
+ 									});
+								}else{
+									$.messager.alert("提示消息","取消保存","info",function(){});
+								}
+							});
+				
+			}
+			
+			
+			
+			
+		</script>
+	</head>
+	<body>
+		<table id="mt" >
+		</table>
+		<div id="form1"></div>
+	</body>
+</html>

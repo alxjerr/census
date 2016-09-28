@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>学籍管理</title>
+		<link rev="stylesheet" rel="stylesheet" href="easyui/themes/default/easyui.css" />
+		<link rev="stylesheet" rel="stylesheet" href="easyui/themes/icon.css" />
+		<script src="easyui/jquery.min.js"></script>
+		<script src="easyui/locale/easyui-lang-zh_CN.js"></script>
+		<script src="easyui/jquery.easyui.min.js"></script>
+		
+	<script type="text/javascript">
+		var closeIndex = -999;
+			$(function(){
+				$('#mt').datagrid({
+					idField:'id',
+					columns:[[
+						{title:'姓名',field:'name',editor:'text'},
+						{title:'年龄',field:'age',editor:'numberbox'},
+						{title:'班级',field:'info'},
+						{title:'入学时间',field:'time'}
+					]],
+					frozenColumns:[[
+		   			{title:'选择',field:'id',checkbox:true}
+		   	]],
+					
+					data:[
+						{'id':100,'name':'scott','age':8,'sex':'男','info':'重点小学重点班2016级2班','time':'2016年9月1日'},
+						{'id':101,'name':'tom1','age':9,'sex':'男','info':'重点小学重点班2016级2班..............................................asc','time':'2016年9月1日'},
+						{'id':102,'name':'tom2','age':10,'sex':'男','info':'重点小学重点班2016级2班','time':'2016年9月1日'},
+						{'id':103,'name':'scott3','age':8,'sex':'男','info':'重点小学重点班2016级2班','time':'2016年9月1日'},
+						{'id':104,'name':'tom4','age':9,'sex':'男','info':'重点小学重点班2016级2班..............................................asc','time':'2016年9月1日'},
+						{'id':105,'name':'tom5','age':10,'sex':'男','info':'重点小学重点班2016级2班','time':'2016年9月1日'},
+						{'id':106,'name':'scott6','age':11,'sex':'男','info':'重点小学重点班2016级2班','time':'2016年9月1日'},
+						{'id':107,'name':'tom7','age':12,'sex':'男','info':'重点小学重点班2016级2班..............................................asc','time':'2016年9月1日'},
+						{'id':108,'name':'tom8','age':13,'sex':'男','info':'重点小学重点班2016级2班','time':'2016年9月1日'}
+					],
+					toolbar: [{
+						iconCls: 'icon-save',
+						text:'保存',
+						handler: function(){
+							
+							/*$.messager.alert('保存按钮','保存成功')*/
+							$.messager.show({
+								title:'提示消息',
+								msg:'保存成功！',
+								timeout:5000,
+								showType:'slide'
+							   });
+						}
+					},'-',{
+						iconCls: 'icon-remove',
+						text:'删除',
+						handler: function(){
+							var row = $('#mt').datagrid('getSelected');
+							if(!row){
+								$.messager.alert("错误消息","未选中");
+							}else{
+							
+							$.messager.confirm("警示消息","是否确认删除？",function(r){
+								if(r){ 
+									/*var row = $('#mt').datagrid('getSelected');*/
+									var index = $('#mt').datagrid('getRowIndex',row);
+									$('#mt').datagrid('deleteRow',index);
+ 									$.messager.alert("提示消息","成功删除！","info",function(){});
+								}else{
+									$.messager.alert("提示消息","取消删除","info",function(){});
+								}
+							});
+							
+							}
+							
+							/*$.messager.alert('删除按钮','删除成功')*/
+						}
+					},'-',{
+						iconCls: 'icon-add',
+						text:'添加',
+						handler: function adduser(){
+							//是不是应该写函数，点击click?不，handler点击之后就是来处理的。
+							//windows窗口
+							//$('#win').window('refresh','form1.html');
+							/*$.messager.alert('应该是form表单','弹出form'),*/
+							$('#form1').dialog({
+								title: '新增用户',   
+							    width: 390,   
+							    height: 280,   
+							    minimizable:true,
+							    maximizable:false,
+							    resizable:true,
+							    closed:false,
+							    closable:true,
+							    modal: true,
+							    content:'<iframe src="form1.html" style="border:0;width:375px;height:240px" > 这是iframe</iframe>',
+								/*buttons:[{
+									text:'保存',
+									handler:function(){alert('保存成功');$('#addUser').window('close'); }
+								},{
+									text:'取消',
+									handler:function(){$('#addUser').window('close'); }
+								}]*/
+							})
+						}
+					},'-',{
+						/*handler: function(){
+							$("<table><tr><td style='padding:0 8px'><label>标题:</label></td><td><input id='sTitle' name='sTitle'></td></tr></table>").prependTo("#mt.panel[style='display: block;'].datagrid-toolbar");
+								$('#sTitle').searchbox({
+								    width : 180,
+								    searcher : doSearch,
+								    prompt : '请输入标题'
+								});
+								function doSearch() {
+								    $("#grid").datagrid("load", {
+								    "sTitle" : $("#sTitle").val()
+								    });
+								}
+						}*/
+					}
+					],
+					striped:true,
+					nowrap:true,
+					//loadMsg:'请等待数据加载中.....',
+					singleSelect:true,
+					sortName:'age',
+					pagination:true,
+					pagePosition:'bottom',
+					pageNumber:1,
+					pageSize:10,
+					pageList:[10,20,30]
+				});
+				//$('#mt').datagrid('beginEdit',2);
+				$('tr').click(function(){
+					if(closeIndex==-999){
+						//返回选定的行
+						var row = $('#mt').datagrid('getSelected');
+						console.info(row);//[{'name':'scott','age':23,'info':'xxxx'}]
+						//获取行号
+						var index = $('#mt').datagrid('getRowIndex',row);
+						console.info(index);
+						$('#mt').datagrid('beginEdit',index);
+						closeIndex=index;
+						
+					}else{
+						
+						$('#mt').datagrid('endEdit',closeIndex);
+						//返回选定的行
+						var row = $('#mt').datagrid('getSelected');
+						/*alert('id:'+row.id+"\name:"+row.name);*/
+						
+						//获取行号
+						var index = $('#mt').datagrid('getRowIndex',row);
+						console.info(index);
+						$('#mt').datagrid('beginEdit',index);
+						
+						closeIndex=index;
+					}
+				});
+				
+			})
+			
+			function qq(value,name){ 
+				alert(value+":"+name) 
+			}
+			
+			
+			
+		</script>
+	</head>
+	<body>
+		<br />
+		<!--<input id="ss"></input>-->
+		<input id="ss" class="easyui-searchbox" style="width:300px" 
+		data-options="searcher:qq,prompt:'Please Input Value',menu:'#mm'"></input> 
+		
+		<div id="mm" style="width:120px"> 
+		<div data-options="name:'name0',iconCls:'icon-ok'">按姓名查找</div> 
+		<div data-options="name:'class0'">按班级查找</div> 
+		<div data-options="name:'time'">按时间查找</div> 
+		</div>
+		<br /><br />
+		
+		<table id="mt" >
+		</table>
+		<div id="form1"></div>
+	</body>
+</html>

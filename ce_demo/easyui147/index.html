@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>户籍管理主页</title>
+		<link rev="stylesheet" rel="stylesheet" href="easyui/themes/default/easyui.css" />
+		<link rev="stylesheet" rel="stylesheet" href="easyui/themes/icon.css" />
+		<script src="easyui/jquery.min.js"></script>
+		<script src="easyui/locale/easyui-lang-zh_CN.js"></script>
+		<script src="easyui/jquery.easyui.min.js"></script>
+		
+		<script type="text/javascript">
+		window.onload=function(){	
+			$('#mytabs').hide();
+			$('#aa').show();
+
+							//是不是应该写函数，点击click?不，handler点击之后就是来处理的。
+							//windows窗口
+			
+			/*$('#cmm').window({
+								title:'请先登录',
+								height:"200",
+								width:'300',
+								minimizable : false, 
+								href:'login.html',
+								modal:true,
+								closable:false
+							})		*/		
+							
+		}
+		
+			$(function(){
+				
+				//创建手风琴菜单
+				$('#ac').accordion({
+					width:90,
+					height:520,
+					border:true
+				});
+				
+				$('#ac').accordion('add',{
+					title: '管理',
+					content: '<body style="background-color: cadetblue></body>',
+					selected: false
+				});
+				/*$('#ac').accordion('add',{
+					title: '管理',
+					content: '新内容',
+					selected: false
+				});
+*/				
+				//创建选项卡面板
+				$('#mytabs').tabs({
+					/*width:$("#mytabs").parent().width(), 
+					heigh:'auto',*/
+					/*width:'1000',
+					height:'530',*/
+					width:$("#center0").parent().width(), 
+					heigh:'auto',
+					border:'true'
+				});
+				/*$('#mytabs').tabs('add',{
+					title:'欢迎页',   				
+				    content:'<center><span style="">欢迎进入户籍管理系统</span></center>',   
+				    closable:false
+				});*/
+				$('a[title]').click(function(){
+					var t = $(this).attr('title');
+					var path = $(this).attr('path');
+/*					var wi = document.getElementById("center0").parent().width().value();
+*/					
+                     var wi =$('#center0').parent().width();
+                     var hr=$('#center0').parent().height();
+                    /*alert(wi);*/
+					$('#mytabs').show();
+					$('#aa').hide();
+						if(!$('#mytabs').tabs('exists',t)){
+							$('#mytabs').tabs('add',{
+								title:t, 
+								width:wi, 
+/*								var wi = document.getElementById("center0").parent().width().value(),
+*/					            heigh:$("#center0").parent().height(), 
+							    content:'<iframe src="'+path+'" border="0" width="'+wi+'" height="'+hr+'" ></iframe>',   
+							    closable:true
+							});
+						}else{
+							$('#mytabs').tabs('select',t);
+						}
+				})				
+				
+			})
+			
+		</script>
+		
+	</head>
+	<body class="easyui-layout">
+		<div data-options="region:'north'" style="height:50px;background-image:url(img/123.jpg)">
+		    	<div style="width: 100%;">
+		    		<center>
+		    			
+			    		<div><h2>户籍管理系统</h2></div>			
+		    		</center>
+		    	</div>
+		    </div>  
+		    <div data-options="region:'south',title:'',split:false" style="height:70px;background-image: url(img/123.jpg);">
+		    	<center><br /><br /><br /><span>计算机科学与技术2013级</span>&nbsp;&nbsp;<span>户籍管理小组</span></center>
+		    </div>  
+		    <div data-options="region:'west',title:'管理菜单',split:true" style="width:100px;">
+		    	<div id="ac" style="background-color: cadetblue">
+		    		<!--户籍管理-->
+		    		<div title="户籍管理" style="background-color: cadetblue">  
+				        <a title="实名户籍" path="tab1.html" class="easyui-linkbutton" data-options="iconCls:'icon-man'">实名户籍</a><br>
+				        <a title="空闲户籍" path="tab1.html" class="easyui-linkbutton" data-options="iconCls:'icon-man'">空闲户籍</a><br />
+				        <a title="更名户籍" path="picture.html" class="easyui-linkbutton" data-options="iconCls:'icon-man'">更名户籍</a><br>
+				        <a title="查询户籍" path="picture.html" class="easyui-linkbutton" data-options="iconCls:'icon-man'">查询户籍</a><br>
+				    </div>
+				    <!--学籍管理-->
+				    <div title="学籍管理" style="background-color: cadetblue">  
+				        <a title="在读生" path="tab2.html" class="easyui-linkbutton" data-options="iconCls:'icon-lock'">在读学生</a><br>
+				        <a title="毕业生" path="tab2.html" class="easyui-linkbutton" data-options="iconCls:'icon-lock'">毕业学生</a><br>
+				        <a title="插班生" path="picture.html" class="easyui-linkbutton" data-options="iconCls:'icon-lock'">插班学生</a><br>
+				        <a title="转学生" path="picture.html" class="easyui-linkbutton" data-options="iconCls:'icon-lock'">转学学生</a><br>
+				    </div>   
+				    <!--图形报表-->
+				    <div title="图形报表" style="background-color: cadetblue">  
+				        <a title="折线-图" path="pic1.html" class="easyui-linkbutton" data-options="iconCls:'icon-large-chart'">折线展示</a><br>
+				        <a title="饼状-图" path="pic2.html" class="easyui-linkbutton" data-options="iconCls:'icon-large-shapes'">饼状展示</a><br>
+				        <a title="图形报表" path="picture.html" class="easyui-linkbutton" data-options="iconCls:'icon-large-clipart'">图形报表</a><br>
+				    </div>   
+				    			    
+		    	</div>		    	
+		    </div>
+		    	
+		    		
+		    		    	
+		    <div id="center0" data-options="region:'center',title:''" style="padding:5px;background:#eee;heigh:300px;">
+		    	<div id="aa" style="<!--background-image:url(img/123.jpg);-->width:100%;height:100%;font-size: 30px;text-align: center;"><br><br>Welcome!</div>
+		    	<div id="mytabs"></div>
+		    </div>  
+		<div id="cmm"></div>
+		
+		
+	</body>
+</html>
